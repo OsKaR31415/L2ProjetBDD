@@ -188,7 +188,7 @@ def random_companions(players: [Player]) -> [CompanionOf]:
 
 
 
-players: [Player] = [random_player() for _ in range(5000)]
+players: [Player] = [random_player() for _ in range(1000)]
 places: [Place] = load_places()
 spells: [Spell] = load_spells()
 player_knows_spell: [PlayerKnowsSpell] = random_player_spells_links(players, spells)
@@ -199,32 +199,25 @@ companion_of: [CompanionOf] = random_companions(players)
 
 
 open("output/player.tsv", "w").close()  # clear file
-print("\nID	specie	name	strength	magic", file=open("output/player.tsv", "w"))
-print(*players, sep='\n', file=open('output/player.tsv', 'w'))
+print("ID	name	specie	strength	magic", *players, sep='\n', file=open('output/player.tsv', 'w'))
 
 open("output/place.tsv", "w").close()
-print("\nID	name	biome")
-print(*places, sep='\n', file=open('output/place.tsv', 'w'))
+print("ID	name	biome", *places, sep='\n', file=open('output/place.tsv', 'w'))
 
 open("output/spells.tsv", "w").close()
-print("\nID	name	level	duration	focus	ritual")
-print(*spells, sep='\n', file=open('output/spells.tsv', 'w'))
+print("ID	name	level	duration	focus	ritual", *spells, sep='\n', file=open('output/spells.tsv', 'w'))
 
 open("output/player_visited_place.tsv", "w").close()
-print("\nplayerID	placeID	number_of_visits")
-print(*player_visited_place, sep='\n', file=open('output/player_visited_place.tsv', 'w'))
+print("playerID	placeID	number_of_visits", *player_visited_place, sep='\n', file=open('output/player_visited_place.tsv', 'w'))
 
 open("output/player_comes_from.tsv", "w").close()
-print("\nplayerID	placeID	???")
-print(*player_comes_from, sep='\n', file=open('output/player_comes_from.tsv', 'w'))
+print("playerID	placeID	???", *player_comes_from, sep='\n', file=open('output/player_comes_from.tsv', 'w'))
 
 open("output/player_knows_spell.tsv", "w").close()
-print("\nplayerID	placeID	mastery")
-print(*player_knows_spell, sep='\n', file=open('output/player_knows_spell.tsv', 'w'))
+print("playerID	placeID	mastery", *player_knows_spell, sep='\n', file=open('output/player_knows_spell.tsv', 'w'))
 
 open("output/companion_of.tsv", "w").close()
-print("\nplayerID	companion_ID	years_together	campaigns_together")
-print(*companion_of, sep='\n', file=open('output/companion_of.tsv', 'w'))
+print("playerID	companion_ID	years_together	campaigns_together", *companion_of, sep='\n', file=open('output/companion_of.tsv', 'w'))
 
 
 
