@@ -1,2 +1,9 @@
 
 *.swp
+BD_creation/output/companion_of.tsv
+BD_creation/output/place.tsv
+BD_creation/output/player.tsv
+BD_creation/output/player_comes_from.tsv
+BD_creation/output/player_knows_spell.tsv
+BD_creation/output/player_visited_place.tsv
+BD_creation/output/spells.tsv
