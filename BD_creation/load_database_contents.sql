@@ -4,37 +4,39 @@
 \cd /Users/oscarplaisant/devoirs/informatique/projets/L2/L2ProjetBDD/BD_creation/
 
 COPY Player
-FROM 'output/player.tsv'
+FROM '/Users/oscarplaisant/devoirs/informatique/projets/L2/L2ProjetBDD/BD_creation/output/player.tsv'
 DELIMITER E'\t'
 CSV HEADER;
 
 COPY Place
-FROM 'output/place.tsv'
+FROM '/Users/oscarplaisant/devoirs/informatique/projets/L2/L2ProjetBDD/BD_creation/output/place.tsv'
 DELIMITER E'\t'
 CSV HEADER;
 
 COPY Spell
-FROM 'output/spell.tsv'
+FROM '/Users/oscarplaisant/devoirs/informatique/projets/L2/L2ProjetBDD/BD_creation/output/spells.tsv'
 DELIMITER E'\t'
 CSV HEADER;
 
 COPY PlayerComesFrom
-FROM 'output/player_comes_from.tsv'
+FROM '/Users/oscarplaisant/devoirs/informatique/projets/L2/L2ProjetBDD/BD_creation/output/player_comes_from.tsv'
 DELIMITER E'\t'
 CSV HEADER;
 
 COPY PlayerVisitedPlace
-FROM 'output/player_visited_place.tsv'
+FROM '/Users/oscarplaisant/devoirs/informatique/projets/L2/L2ProjetBDD/BD_creation/output/player_visited_place.tsv'
 DELIMITER E'\t'
 CSV HEADER;
 
 COPY PlayerKnowsSpell
-FROM 'output/player_knows_spell.tsv'
+FROM '/Users/oscarplaisant/devoirs/informatique/projets/L2/L2ProjetBDD/BD_creation/output/player_knows_spell.tsv'
 DELIMITER E'\t'
 CSV HEADER;
 
 COPY CompanionOf
-FROM 'output/companion_of.tsv'
+FROM '/Users/oscarplaisant/devoirs/informatique/projets/L2/L2ProjetBDD/BD_creation/output/companion_of.tsv'
 DELIMITER E'\t'
 CSV HEADER;
+
+
 

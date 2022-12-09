@@ -33,7 +33,7 @@ class Player:
         return self
 
     def __repr__(self) -> str:
-        SQL = f'{self.ID}	"{self.name}"	"{self.specie}"	{self.strength}	{self.magic}'
+        SQL = f'{self.ID};"{self.name}";"{self.specie}";{self.strength};{self.magic}'
         return SQL
 
 def random_player():
@@ -48,7 +48,7 @@ class Place:
     biome: str
 
     def __repr__(self) -> str:
-        SQL = f'{self.ID}	"{self.name}"	"{self.biome}"'
+        SQL = f'{self.ID};"{self.name}";"{self.biome}"'
         return SQL
 
 
@@ -80,7 +80,7 @@ class Spell:
     ritual: bool  # needs a ritual ? (True/False)
 
     def __repr__(self):
-        SQL = f'{self.ID}	"{self.name}"	{self.level}	"{self.duration}"	{self.focus}	{self.ritual}'
+        SQL = f'{self.ID};"{self.name}";{self.level};"{self.duration}";{self.focus};{self.ritual}'
         return SQL
 
 
@@ -108,7 +108,7 @@ class PlayerKnowsSpell:
     mastery: int
 
     def __repr__(self):
-        return f'{self.player_ID}	{self.spell_ID}	{self.mastery}'
+        return f'{self.player_ID};{self.spell_ID};{self.mastery}'
 
 def random_player_spells_links(players, spells):
     result: list[PlayerKnowsSpell] = []
@@ -121,7 +121,7 @@ def random_player_spells_links(players, spells):
             mastery: int = 1 + random_distributed_int(9)
             result.append(PlayerKnowsSpell(player.ID, spell.ID, mastery))
     for french in filter(lambda p: p.specie == "french", players):
-        for spell in random.sample(spells, random.randint(200, 361)):
+        for spell in random.sample(spells, random.randint(250, 361)):
             mastery: int = 1 + random_distributed_int(9)
             result.append(PlayerKnowsSpell(french.ID, spell.ID, mastery))
     return result
@@ -134,12 +134,12 @@ class PlayerVisitedPlace:
     number_of_visits: int
 
     def __repr__(self):
-        SQL = f'{self.player}	{self.place}	{self.number_of_visits}'
+        SQL = f'{self.player};{self.place};{self.number_of_visits}'
         return SQL
 
 def random_player_places_links(players: list[Player], places: list[Place]) -> list[PlayerVisitedPlace]:
     result: list[PlayerVisitedPlace] = []
-    for _ in range(15 * len(players)):
+    for _ in range(10 * len(players)):
         player = random.choice(players)
         places_visited = random.sample(places, random.randint(1, 15))
         for place in places_visited:
@@ -154,7 +154,7 @@ class PlayerComesFrom:
     # TODO: find additionnal property
 
     def __repr__(self) -> str:
-        SQL = f"{self.player_ID}	{self.place_ID}"
+        SQL = f"{self.player_ID};{self.place_ID}"
         return SQL
 
 def random_players_origins(players: [Player], places: [Place]) -> [PlayerComesFrom]:
@@ -173,7 +173,7 @@ class CompanionOf:
     campaigns_together: int
 
     def __repr__(self) -> str:
-        SQL = f"{self.player_ID}	{self.companion_ID}	{self.years_together}	{self.campaigns_together}"
+        SQL = f"{self.player_ID};{self.companion_ID};{self.years_together};{self.campaigns_together}"
         return SQL
 
 def random_companions(players: [Player]) -> [CompanionOf]:
@@ -188,7 +188,7 @@ def random_companions(players: [Player]) -> [CompanionOf]:
 
 
 
-players: [Player] = [random_player() for _ in range(1000)]
+players: [Player] = [random_player() for _ in range(200)]
 places: [Place] = load_places()
 spells: [Spell] = load_spells()
 player_knows_spell: [PlayerKnowsSpell] = random_player_spells_links(players, spells)
@@ -199,25 +199,31 @@ companion_of: [CompanionOf] = random_companions(players)
 
 
 open("output/player.tsv", "w").close()  # clear file
-print("ID	name	specie	strength	magic", *players, sep='\n', file=open('output/player.tsv', 'w'))
+print("ID;specie;name;strength;magic", *players, sep='\n', file=open('output/player.tsv', 'w'))
 
 open("output/place.tsv", "w").close()
-print("ID	name	biome", *places, sep='\n', file=open('output/place.tsv', 'w'))
+print("ID;name;biome", *places, sep='\n', file=open('output/place.tsv', 'w'))
 
 open("output/spells.tsv", "w").close()
-print("ID	name	level	duration	focus	ritual", *spells, sep='\n', file=open('output/spells.tsv', 'w'))
+print("ID;name;level;duration;focus;ritual", *spells, sep='\n', file=open('output/spells.tsv', 'w'))
 
 open("output/player_visited_place.tsv", "w").close()
-print("playerID	placeID	number_of_visits", *player_visited_place, sep='\n', file=open('output/player_visited_place.tsv', 'w'))
+print("playerID;placeID;number_of_visits", *player_visited_place, sep='\n', file=open('output/player_visited_place.tsv', 'w'))
 
 open("output/player_comes_from.tsv", "w").close()
-print("playerID	placeID	???", *player_comes_from, sep='\n', file=open('output/player_comes_from.tsv', 'w'))
+print("playerID;placeID;???", *player_comes_from, sep='\n', file=open('output/player_comes_from.tsv', 'w'))
 
 open("output/player_knows_spell.tsv", "w").close()
-print("playerID	placeID	mastery", *player_knows_spell, sep='\n', file=open('output/player_knows_spell.tsv', 'w'))
+print("playerID;placeID;mastery", *player_knows_spell, sep='\n', file=open('output/player_knows_spell.tsv', 'w'))
 
 open("output/companion_of.tsv", "w").close()
-print("playerID	companion_ID	years_together	campaigns_together", *companion_of, sep='\n', file=open('output/companion_of.tsv', 'w'))
+print("nplayerID;companion_ID;years_together;campaigns_together", *companion_of, sep='\n', file=open('output/companion_of.tsv', 'w'))
+
+
+all_tables = (players, places, spells, player_knows_spell, player_visited_place, player_comes_from, companion_of)
+print("total number of tuples :", sum(map(len, all_tables)))
+print("number of tuples for each table :", {type(table[0]).__name__: len(table) for table in all_tables})
+
 
 
 
