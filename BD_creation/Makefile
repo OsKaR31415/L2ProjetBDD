@@ -6,7 +6,9 @@ MAX_SPELLS_PER_PLAYER=10
 # average percentage of all players that are companions of a giver player
 COMPANIONS_PERCENTAGE=10
 
+
 all: data update
+
 
 # run first time to install required dependencies
 install:
@@ -18,33 +20,35 @@ install:
 
 
 update:
-	echo "▞▀▖▛▀▖▛▀▘▞▀▖▀▛▘▛▀▘ ▛▀▖▞▀▖▀▛▘▞▀▖▛▀▖▞▀▖▞▀▖▛▀▘"
-	echo "▌  ▙▄▘▙▄ ▙▄▌ ▌ ▙▄  ▌ ▌▙▄▌ ▌ ▙▄▌▙▄▘▙▄▌▚▄ ▙▄ "
-	echo "▌ ▖▌▚ ▌  ▌ ▌ ▌ ▌   ▌ ▌▌ ▌ ▌ ▌ ▌▌ ▌▌ ▌▖ ▌▌  "
-	echo "▝▀ ▘ ▘▀▀▘▘ ▘ ▘ ▀▀▘ ▀▀ ▘ ▘ ▘ ▘ ▘▀▀ ▘ ▘▝▀ ▀▀▘"
+	echo "▞▀▖▛▀▖▛▀▘▞▀▖▀▛▘▛▀▘ ▛▀▖▞▀▖▀▛▘▞▀▖▛▀▖▞▀▖▞▀▖▛▀▘\n"
+	echo "▌  ▙▄▘▙▄ ▙▄▌ ▌ ▙▄  ▌ ▌▙▄▌ ▌ ▙▄▌▙▄▘▙▄▌▚▄ ▙▄ \n"
+	echo "▌ ▖▌▚ ▌  ▌ ▌ ▌ ▌   ▌ ▌▌ ▌ ▌ ▌ ▌▌ ▌▌ ▌▖ ▌▌  \n"
+	echo "▝▀ ▘ ▘▀▀▘▘ ▘ ▘ ▀▀▘ ▀▀ ▘ ▘ ▘ ▘ ▘▀▀ ▘ ▘▝▀ ▀▀▘\n"
 	# DROP ALL TABLES
-	echo "⡏⢱ ⣏⡱ ⡎⢱ ⣏⡱   ⢹⠁ ⣎⣱ ⣏⡱ ⡇  ⣏⡉ ⢎⡑"
-	echo "⠧⠜ ⠇⠱ ⠣⠜ ⠇    ⠸  ⠇⠸ ⠧⠜ ⠧⠤ ⠧⠤ ⠢⠜"
+	echo "⡏⢱ ⣏⡱ ⡎⢱ ⣏⡱   ⢹⠁ ⣎⣱ ⣏⡱ ⡇  ⣏⡉ ⢎⡑\n"
+	echo "⠧⠜ ⠇⠱ ⠣⠜ ⠇    ⠸  ⠇⠸ ⠧⠜ ⠧⠤ ⠧⠤ ⠢⠜\n"
 	psql -d dnd -f drop_all_tables.sql
 	# CREATE TABLES
-	echo "⡎⠑ ⣏⡱ ⣏⡉ ⣎⣱ ⢹⠁ ⣏⡉   ⢹⠁ ⣎⣱ ⣏⡱ ⡇  ⣏⡉ ⢎⡑"
-	echo "⠣⠔ ⠇⠱ ⠧⠤ ⠇⠸ ⠸  ⠧⠤   ⠸  ⠇⠸ ⠧⠜ ⠧⠤ ⠧⠤ ⠢⠜"
+	echo "⡎⠑ ⣏⡱ ⣏⡉ ⣎⣱ ⢹⠁ ⣏⡉   ⢹⠁ ⣎⣱ ⣏⡱ ⡇  ⣏⡉ ⢎⡑\n"
+	echo "⠣⠔ ⠇⠱ ⠧⠤ ⠇⠸ ⠸  ⠧⠤   ⠸  ⠇⠸ ⠧⠜ ⠧⠤ ⠧⠤ ⠢⠜\n"
 	psql -d dnd -f create_database.sql
 	# FILL TABLES
-	echo "⣏⡉ ⡇ ⡇  ⡇    ⢹⠁ ⣎⣱ ⣏⡱ ⡇  ⣏⡉ ⢎⡑"
-	echo "⠇  ⠇ ⠧⠤ ⠧⠤   ⠸  ⠇⠸ ⠧⠜ ⠧⠤ ⠧⠤ ⠢⠜"
+	echo "⣏⡉ ⡇ ⡇  ⡇    ⢹⠁ ⣎⣱ ⣏⡱ ⡇  ⣏⡉ ⢎⡑\n"
+	echo "⠇  ⠇ ⠧⠤ ⠧⠤   ⠸  ⠇⠸ ⠧⠜ ⠧⠤ ⠧⠤ ⠢⠜\n"
 	python3 generate_database_copy_query.py
 	psql -d dnd -f load_database_contents.sql
+
 
 # phony makes the update work.
 # else, make considers that the file is aloready up-to-date
 .PHONY: data
 
+
 data:
-	echo "▞▀▖▛▀▖▛▀▘▞▀▖▀▛▘▛▀▘ ▛▀▖▞▀▖▀▛▘▞▀▖  ▞  ▐       ▝▖"
-	echo "▌  ▙▄▘▙▄ ▙▄▌ ▌ ▙▄  ▌ ▌▙▄▌ ▌ ▙▄▌ ▐   ▜▀ ▞▀▘▌ ▌▐"
-	echo "▌ ▖▌▚ ▌  ▌ ▌ ▌ ▌   ▌ ▌▌ ▌ ▌ ▌ ▌ ▝▖▗▖▐ ▖▝▀▖▐▐ ▞"
-	echo "▝▀ ▘ ▘▀▀▘▘ ▘ ▘ ▀▀▘ ▀▀ ▘ ▘ ▘ ▘ ▘  ▝▝▘ ▀ ▀▀  ▘▝ "
+	echo "▞▀▖▛▀▖▛▀▘▞▀▖▀▛▘▛▀▘ ▛▀▖▞▀▖▀▛▘▞▀▖  ▞  ▐       ▝▖\n"
+	echo "▌  ▙▄▘▙▄ ▙▄▌ ▌ ▙▄  ▌ ▌▙▄▌ ▌ ▙▄▌ ▐   ▜▀ ▞▀▘▌ ▌▐\n"
+	echo "▌ ▖▌▚ ▌  ▌ ▌ ▌ ▌   ▌ ▌▌ ▌ ▌ ▌ ▌ ▝▖▗▖▐ ▖▝▀▖▐▐ ▞\n"
+	echo "▝▀ ▘ ▘▀▀▘▘ ▘ ▘ ▀▀▘ ▀▀ ▘ ▘ ▘ ▘ ▘  ▝▝▘ ▀ ▀▀  ▘▝ \n"
 	echo "create the randomized tuples for each relation"
 	python3 BD_creation.py \
 		--players $(NUMBER_OF_PLAYERS) \
@@ -56,5 +60,8 @@ data:
 run:
 	psql dnd
 
+
 demo: data install run
+
+
 
