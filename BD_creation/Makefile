@@ -6,19 +6,33 @@ MAX_SPELLS_PER_PLAYER=10
 # average percentage of all players that are companions of a giver player
 COMPANIONS_PERCENTAGE=10
 
-all: data install
+all: data update
 
-
+# run first time to install required dependencies
 install:
-	toilet -f smblock "CREATE DATABASE"
+	pip3 install fantasynames
+	if ! type "psql"; then
+	echo "installing psql"
+	fi
+
+
+
+update:
+	echo "▞▀▖▛▀▖▛▀▘▞▀▖▀▛▘▛▀▘ ▛▀▖▞▀▖▀▛▘▞▀▖▛▀▖▞▀▖▞▀▖▛▀▘"
+	echo "▌  ▙▄▘▙▄ ▙▄▌ ▌ ▙▄  ▌ ▌▙▄▌ ▌ ▙▄▌▙▄▘▙▄▌▚▄ ▙▄ "
+	echo "▌ ▖▌▚ ▌  ▌ ▌ ▌ ▌   ▌ ▌▌ ▌ ▌ ▌ ▌▌ ▌▌ ▌▖ ▌▌  "
+	echo "▝▀ ▘ ▘▀▀▘▘ ▘ ▘ ▀▀▘ ▀▀ ▘ ▘ ▘ ▘ ▘▀▀ ▘ ▘▝▀ ▀▀▘"
 	# DROP ALL TABLES
-	toilet -f smbraille "DROP TABLES"
+	echo "⡏⢱ ⣏⡱ ⡎⢱ ⣏⡱   ⢹⠁ ⣎⣱ ⣏⡱ ⡇  ⣏⡉ ⢎⡑"
+	echo "⠧⠜ ⠇⠱ ⠣⠜ ⠇    ⠸  ⠇⠸ ⠧⠜ ⠧⠤ ⠧⠤ ⠢⠜"
 	psql -d dnd -f drop_all_tables.sql
 	# CREATE TABLES
-	toilet -f smbraille "CREATE TABLES"
+	echo "⡎⠑ ⣏⡱ ⣏⡉ ⣎⣱ ⢹⠁ ⣏⡉   ⢹⠁ ⣎⣱ ⣏⡱ ⡇  ⣏⡉ ⢎⡑"
+	echo "⠣⠔ ⠇⠱ ⠧⠤ ⠇⠸ ⠸  ⠧⠤   ⠸  ⠇⠸ ⠧⠜ ⠧⠤ ⠧⠤ ⠢⠜"
 	psql -d dnd -f create_database.sql
 	# FILL TABLES
-	toilet -f smbraille "FILL TABLES"
+	echo "⣏⡉ ⡇ ⡇  ⡇    ⢹⠁ ⣎⣱ ⣏⡱ ⡇  ⣏⡉ ⢎⡑"
+	echo "⠇  ⠇ ⠧⠤ ⠧⠤   ⠸  ⠇⠸ ⠧⠜ ⠧⠤ ⠧⠤ ⠢⠜"
 	python3 generate_database_copy_query.py
 	psql -d dnd -f load_database_contents.sql
 
@@ -27,7 +41,10 @@ install:
 .PHONY: data
 
 data:
-	toilet -f smblock "CREATE DATA (.tsv)"
+	echo "▞▀▖▛▀▖▛▀▘▞▀▖▀▛▘▛▀▘ ▛▀▖▞▀▖▀▛▘▞▀▖  ▞  ▐       ▝▖"
+	echo "▌  ▙▄▘▙▄ ▙▄▌ ▌ ▙▄  ▌ ▌▙▄▌ ▌ ▙▄▌ ▐   ▜▀ ▞▀▘▌ ▌▐"
+	echo "▌ ▖▌▚ ▌  ▌ ▌ ▌ ▌   ▌ ▌▌ ▌ ▌ ▌ ▌ ▝▖▗▖▐ ▖▝▀▖▐▐ ▞"
+	echo "▝▀ ▘ ▘▀▀▘▘ ▘ ▘ ▀▀▘ ▀▀ ▘ ▘ ▘ ▘ ▘  ▝▝▘ ▀ ▀▀  ▘▝ "
 	echo "create the randomized tuples for each relation"
 	python3 BD_creation.py \
 		--players $(NUMBER_OF_PLAYERS) \
@@ -40,3 +57,4 @@ run:
 	psql dnd
 
 demo: data install run
+
