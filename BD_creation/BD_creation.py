@@ -235,25 +235,28 @@ companion_of: [CompanionOf] = random_companions(players, companions_percentage=a
 # ┃╻┃┣┳┛┃ ┃ ┣╸     ┃ ┃ ┃   ┣╸ ┃┃  ┣╸ ┗━┓
 # ┗┻┛╹┗╸╹ ╹ ┗━╸    ╹ ┗━┛   ╹  ╹┗━╸┗━╸┗━┛
 
-open("output/player.tsv", "w").close()  # clear the file
+def clear_file(name: str):
+    open(str(name), "w").close()
+
+clear_file("output/player.tsv")
 print("ID	specie	name	strength	magic", *players, sep='\n', file=open('output/player.tsv', 'w'))
 
-open("output/place.tsv", "w").close()
+clear_file("output/place.tsv")
 print("ID	name	biome", *places, sep='\n', file=open('output/place.tsv', 'w'))
 
-open("output/spells.tsv", "w").close()
+clear_file("output/spells.tsv")
 print("ID	name	level	duration	focus	ritual", *spells, sep='\n', file=open('output/spells.tsv', 'w'))
 
-open("output/player_visited_place.tsv", "w").close()
+clear_file("output/player_visited_place.tsv")
 print("playerID	placeID	number_of_visits", *player_visited_place, sep='\n', file=open('output/player_visited_place.tsv', 'w'))
 
-open("output/player_comes_from.tsv", "w").close()
+clear_file("output/player_comes_from.tsv")
 print("playerID	placeID	???", *player_comes_from, sep='\n', file=open('output/player_comes_from.tsv', 'w'))
 
-open("output/player_knows_spell.tsv", "w").close()
+clear_file("output/player_knows_spell.tsv")
 print("playerID	placeID	mastery", *player_knows_spell, sep='\n', file=open('output/player_knows_spell.tsv', 'w'))
 
-open("output/companion_of.tsv", "w").close()
+clear_file("output/companion_of.tsv")
 print("nplayerID	companion_ID	years_together	campaigns_together", *companion_of, sep='\n', file=open('output/companion_of.tsv', 'w'))
 
 

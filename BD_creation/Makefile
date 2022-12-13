@@ -15,6 +15,7 @@ install:
 	pip3 install fantasynames
 	if ! type "psql"; then
 	echo "installing psql"
+	sudo apt install postgresql
 	fi
 
 
