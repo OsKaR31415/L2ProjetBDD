@@ -236,7 +236,7 @@ companion_of: [CompanionOf] = random_companions(players, companions_percentage=a
 # ┗┻┛╹┗╸╹ ╹ ┗━╸    ╹ ┗━┛   ╹  ╹┗━╸┗━╸┗━┛
 
 def clear_file(name: str):
-    open(str(name), "w").close()
+    open(str(name), "xw").close()
 
 clear_file("output/player.tsv")
 print("ID	specie	name	strength	magic", *players, sep='\n', file=open('output/player.tsv', 'w'))
