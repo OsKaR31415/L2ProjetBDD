@@ -1,7 +1,8 @@
+
 \c dnd
 
  -- replace with whatever is your own file
-\cd /Users/oscarplaisant/devoirs/informatique/projets/L2/L2ProjetBDD/BD_creation/
+\cd /Users/oscarplaisant/devoirs/informatique/projets/L2/L2ProjetBDD/BD_creation
 
 COPY Player
 FROM '/Users/oscarplaisant/devoirs/informatique/projets/L2/L2ProjetBDD/BD_creation/output/player.tsv'
@@ -37,6 +38,4 @@ COPY CompanionOf
 FROM '/Users/oscarplaisant/devoirs/informatique/projets/L2/L2ProjetBDD/BD_creation/output/companion_of.tsv'
 DELIMITER E'\t'
 CSV HEADER;
-
-
 

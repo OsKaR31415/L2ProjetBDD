@@ -1,3 +1,4 @@
+\c dnd
 
 DROP TABLE CompanionOf;
 DROP TABLE PlayerComesFrom;

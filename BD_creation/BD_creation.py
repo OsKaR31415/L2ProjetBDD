@@ -1,18 +1,28 @@
 import fantasynames
 import random
 from dataclasses import dataclass
+import argparse
 
 AVAILABLE_SPECIES = ['human', 'human',
                      'elf', 'elf', 'elf', 'elf', 'elf',
                      'dwarf', 'dwarf',
                      'hobbit', 'hobbit', 'hobbit', 'hobbit',
                      'french']
+
 AVAILABLE_BIOMES = ['forest', 'mountain', 'lowland', 'seaside']
 
 
+
+
+
+# RANDOM DISTRIBUTION
 def random_distributed_int(up_to: int =10) -> int:
     return random.sample(range(up_to), 1, counts=reversed(range(up_to)))[0]
 
+
+# ┏━╸╻  ┏━┓┏━┓┏━┓┏━╸┏━┓
+# ┃  ┃  ┣━┫┗━┓┗━┓┣╸ ┗━┓
+# ┗━╸┗━╸╹ ╹┗━┛┗━┛┗━╸┗━┛
 
 Player = "Player"  # for type hinting
 @dataclass
@@ -110,13 +120,15 @@ class PlayerKnowsSpell:
     def __repr__(self):
         return f'{self.player_ID}	{self.spell_ID}	{self.mastery}'
 
-def random_player_spells_links(players, spells):
+def random_player_spells_links(players, spells,
+                               min_spells_per_player: int = 2,
+                               max_spells_per_player: int = 10):
     result: list[PlayerKnowsSpell] = []
     for player in players:
         if player.specie == "french":
             number_of_spells = random.randint(350, 361)
         else:
-            number_of_spells = random.randint(2, 10)
+            number_of_spells = random.randint(int(min_spells_per_player), int(max_spells_per_player))
         for spell in random.sample(spells, number_of_spells):
             mastery = 1 + random_distributed_int(9)
             result.append(PlayerKnowsSpell(player.ID, spell.ID, mastery))
@@ -170,29 +182,60 @@ class CompanionOf:
         SQL = f"{self.player_ID}	{self.companion_ID}	{self.years_together}	{self.campaigns_together}"
         return SQL
 
-def random_companions(players: [Player]) -> [CompanionOf]:
+def random_companions(players: [Player], companions_percentage: int = 20) -> [CompanionOf]:
     result: [CompanionOf] = []
     for idx, player in enumerate(players):
         for companion in players[idx+1:]:
-            years_together = random_distributed_int(25)
-            campaigns_together = random_distributed_int(2 + 5*years_together)
-            result.append(CompanionOf(player.ID, companion.ID, years_together, campaigns_together))
-            result.append(CompanionOf(companion.ID, player.ID, years_together, campaigns_together))
+            if random.randint(1, 100) <= companions_percentage:
+                years_together = random_distributed_int(25)
+                campaigns_together = random_distributed_int(2 + 5*years_together)
+                result.append(CompanionOf(player.ID, companion.ID, years_together, campaigns_together))
+                # make this relation reciprocal
+                result.append(CompanionOf(companion.ID, player.ID, years_together, campaigns_together))
     return result
 
 
 
-players: [Player] = [random_player() for _ in range(2000)]
+# ┏━┓┏━┓┏━┓┏━┓┏━╸┏━┓
+# ┣━┛┣━┫┣┳┛┗━┓┣╸ ┣┳┛
+# ╹  ╹ ╹╹┗╸┗━┛┗━╸╹┗╸
+
+parser = argparse.ArgumentParser("Tool to create random tuples for a dnd database")
+parser.add_argument("--players", "-p",
+                    help="Number of players in the database",
+                    type=int, default=200)
+parser.add_argument("--min-spells-per-player", "--spmin",
+                    help="Minimmum number of spells for a player (except for french players)",
+                    type=int, default=2)
+parser.add_argument("--max-spells-per-player", "--spmax",
+                    help="Maximum number of spells for a player (except for french players)",
+                    type=int, default=10)
+parser.add_argument("--companions_percentage", "--cp",
+                    help="average percentage of people that are companions of a player",
+                    type=int, default=20)
+args = parser.parse_args()
+
+
+# ┏━╸┏━┓┏━╸┏━┓╺┳╸┏━╸   ╺┳┓┏━┓╺┳╸┏━┓
+# ┃  ┣┳┛┣╸ ┣━┫ ┃ ┣╸     ┃┃┣━┫ ┃ ┣━┫
+# ┗━╸╹┗╸┗━╸╹ ╹ ╹ ┗━╸   ╺┻┛╹ ╹ ╹ ╹ ╹
+
+players: [Player] = [random_player() for _ in range(args.players)]
 places: [Place] = load_places()
 spells: [Spell] = load_spells()
-player_knows_spell: [PlayerKnowsSpell] = random_player_spells_links(players, spells)
+player_knows_spell: [PlayerKnowsSpell] = random_player_spells_links(players, spells,
+                                                                    min_spells_per_player=args.min_spells_per_player,
+                                                                    max_spells_per_player=args.max_spells_per_player)
 player_visited_place: [PlayerVisitedPlace] = random_player_places_links(players, places)
 player_comes_from: [PlayerComesFrom] = random_players_origins(players, places)
-companion_of: [CompanionOf] = random_companions(players)
+companion_of: [CompanionOf] = random_companions(players, companions_percentage=args.companions_percentage)
 
 
+# ╻ ╻┏━┓╻╺┳╸┏━╸   ╺┳╸┏━┓   ┏━╸╻╻  ┏━╸┏━┓
+# ┃╻┃┣┳┛┃ ┃ ┣╸     ┃ ┃ ┃   ┣╸ ┃┃  ┣╸ ┗━┓
+# ┗┻┛╹┗╸╹ ╹ ┗━╸    ╹ ┗━┛   ╹  ╹┗━╸┗━╸┗━┛
 
-open("output/player.tsv", "w").close()  # clear file
+open("output/player.tsv", "w").close()  # clear the file
 print("ID	specie	name	strength	magic", *players, sep='\n', file=open('output/player.tsv', 'w'))
 
 open("output/place.tsv", "w").close()

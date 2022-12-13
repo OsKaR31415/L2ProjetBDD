@@ -38,9 +38,9 @@ CREATE TABLE PlayerVisitedPlace (
     Player_ID NUMERIC,
     Place_ID NUMERIC,
     number_of_visits INT,
-    PRIMARY KEY (Player_ID, Spell_ID),
+    PRIMARY KEY (Player_ID, Place_ID),
     FOREIGN KEY(Player_ID) REFERENCES Player(ID),
-    FOREIGN KEY(Place_ID) REFERENCES Place(ID),
+    FOREIGN KEY(Place_ID) REFERENCES Place(ID)
 );
 
 CREATE TABLE PlayerComesFrom (
