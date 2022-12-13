@@ -2,6 +2,7 @@ import fantasynames
 import random
 from dataclasses import dataclass
 import argparse
+import os
 
 AVAILABLE_SPECIES = ['human', 'human',
                      'elf', 'elf', 'elf', 'elf', 'elf',
@@ -236,8 +237,10 @@ companion_of: [CompanionOf] = random_companions(players, companions_percentage=a
 # ┗┻┛╹┗╸╹ ╹ ┗━╸    ╹ ┗━┛   ╹  ╹┗━╸┗━╸┗━┛
 
 def clear_file(name: str):
-    open(str(name), "x")
     open(str(name), "w").close()
+
+if not os.path.exists("output"):
+    os.mkdir("output")
 
 clear_file("output/player.tsv")
 print("ID	specie	name	strength	magic", *players, sep='\n', file=open('output/player.tsv', 'w'))
