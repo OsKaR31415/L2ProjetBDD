@@ -364,5 +364,37 @@ GROUP BY player.name
 
 
 
+ -- number of players whose companions do not come from seaside or mountains, for each place they come from
+SELECT player.name, place.biome
+FROM player
+INNER JOIN playercomesfrom ON player.ID = player_id
+INNER JOIN place ON place_id = place.id
+WHERE player.id NOT IN (
+    SELECT DISTINCT player.id
+    FROM player, (
+        SELECT player.id FROM player
+        INNER JOIN PlayerComesFrom ON player.id = player_id
+        INNER JOIN place ON place_id = place.id
+        WHERE place.biome = 'seaside' OR place.biome = 'mountains'
+    ) AS companion
+)
+;
+
+
+ -- number of players that don't master 49-3 nor Amis, by the place they were born in
+ -- only showing places where at least 10 players match the condition
+SELECT place.name, count(player.id) FROM player
+INNER JOIN PlayerComesFrom ON player.id = player_id
+INNER JOIN place ON place_id = place.id
+WHERE player.id NOT IN (
+    SELECT player.id
+    FROM player
+    INNER JOIN PlayerKnowsSpell ON player.ID = player_id
+    INNER JOIN spell ON spell_id = spell.id
+    WHERE spell.name = '49-3' OR spell.name = 'Amis'
+)
+GROUP BY place.name
+HAVING count(player.id) > 10
+;
 
 
