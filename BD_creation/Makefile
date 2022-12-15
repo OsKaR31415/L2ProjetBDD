@@ -1,10 +1,10 @@
 # number of players
-NUMBER_OF_PLAYERS=2000
+NUMBER_OF_PLAYERS=3000
 # minimum and maximum amount of spells per player (except for french players)
 MIN_SPELLS_PER_PLAYER=2
 MAX_SPELLS_PER_PLAYER=10
 # average percentage of all players that are companions of a giver player
-COMPANIONS_PERCENTAGE=20
+COMPANIONS_PERCENTAGE=30
 
 
 all: data update
