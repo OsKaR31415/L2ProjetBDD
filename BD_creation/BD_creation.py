@@ -64,7 +64,7 @@ class Place:
 
 
 def load_places():
-    # load the list of places as a list[str]
+    # load the list of places as a [str]
     with open('data/Places_data.csv') as file_places:
         list_places = file_places.read().split('\n')
     # create the list of Place objects
@@ -96,12 +96,12 @@ class Spell:
 
 
 def load_spells():
-    # load the list of places as a list[str]
+    # load the list of places as a [str]
     with open('data/Spell_data.tsv') as file_spell:
         # ignore first and last lines
         list_spells = file_spell.read().split('\n')[1:-1]
     # create the list of Spell objects
-    instanciated_spells : list[Spell] = []
+    instanciated_spells : [Spell] = []
     for spell_attributes in list_spells:
         spell_attributes = spell_attributes.split('\t')
         spell_name, level, school, duration, focus, ritual, _ = spell_attributes
@@ -124,7 +124,7 @@ class PlayerKnowsSpell:
 def random_player_spells_links(players, spells,
                                min_spells_per_player: int = 2,
                                max_spells_per_player: int = 10):
-    result: list[PlayerKnowsSpell] = []
+    result: [PlayerKnowsSpell] = []
     for player in players:
         if player.specie == "french":
             number_of_spells = random.randint(350, 361)
@@ -146,8 +146,8 @@ class PlayerVisitedPlace:
         SQL = f'{self.player}	{self.place}	{self.number_of_visits}'
         return SQL
 
-def random_player_places_links(players: list[Player], places: list[Place]) -> list[PlayerVisitedPlace]:
-    result: list[PlayerVisitedPlace] = []
+def random_player_places_links(players: [Player], places: [Place]) -> [PlayerVisitedPlace]:
+    result: [PlayerVisitedPlace] = []
     for player in players:
         for place in random.sample(places, random.randint(1, 15)):
             result.append(PlayerVisitedPlace(player.ID, place.ID, 1+random_distributed_int(50)))
