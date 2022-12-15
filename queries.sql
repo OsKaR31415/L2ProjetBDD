@@ -159,6 +159,7 @@ WHERE player.ID NOT IN (
     ) AS notknowsspell
 );
 
+
  -- players that have all the spells of level 4
 SELECT player.name FROM player
 WHERE player.ID NOT IN (
@@ -170,22 +171,41 @@ WHERE player.ID NOT IN (
     ) AS notknowsspell
 );
 
- -- players that have know every human
 
-
-
-SELECT player.name FROM player
+ -- players of strength 0 that know every person of strength 8
+SELECT player.name, companion.magic, companion.strength FROM player
+INNER JOIN companionof ON player.ID = player_id
+INNER JOIN player as companion on companion_id = companion.id
 WHERE player.ID NOT IN (
     SELECT DISTINCT X.player_id FROM (
-        SELECT player.ID as player_id, companion.ID
+        SELECT DISTINCT player.ID as player_id, companion.ID
         FROM player, player AS companion
         WHERE companion.strength = 8
         EXCEPT
         SELECT player_id, companion_id FROM companionof
     ) AS X
-);
+)
+ORDER BY player.name
+;
 
 
+
+
+
+ -- 
+SELECT player.name FROM player
+WHERE player.id NOT IN (
+    SELECT DISTINCT player_id FROM (
+        SELECT player.id as player_id, companion.id
+        FROM player, (
+            SELECT player.id FROM player WHERE strength >= 8 AND magic >= 40
+        ) as companion
+        EXCEPT
+        SELECT player_id, companion_id FROM companionof
+    ) AS X
+)
+order by player.id
+;
 
 
 

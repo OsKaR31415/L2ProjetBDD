@@ -44,7 +44,7 @@ class Player:
         self.specie = random.choice(AVAILABLE_SPECIES)
         self.name = getattr(fantasynames, self.specie)()
         self.strength = random_distributed_int()
-        self.magic = random_distributed_int()
+        self.magic = random_distributed_int(50)
         return self
 
     def __repr__(self) -> str:
