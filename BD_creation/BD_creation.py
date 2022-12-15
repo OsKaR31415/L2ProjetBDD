@@ -4,11 +4,15 @@ from dataclasses import dataclass
 import argparse
 import os
 
+TOTAL_PLACES = 352
+TOTAL_SPELLS = 361
+
 AVAILABLE_SPECIES = ['human', 'human',
                      'elf', 'elf', 'elf', 'elf', 'elf',
                      'dwarf', 'dwarf',
                      'hobbit', 'hobbit', 'hobbit', 'hobbit',
-                     'french']
+                     'french',
+                     'anglo']
 
 AVAILABLE_BIOMES = ['forest', 'mountain', 'lowland', 'seaside']
 
@@ -95,6 +99,7 @@ class Spell:
         return SQL
 
 
+
 def load_spells():
     # load the list of places as a [str]
     with open('data/Spell_data.tsv') as file_spell:
@@ -127,7 +132,7 @@ def random_player_spells_links(players, spells,
     result: [PlayerKnowsSpell] = []
     for player in players:
         if player.specie == "french":
-            number_of_spells = random.randint(350, 361)
+            number_of_spells = random.randint(TOTAL_SPELLS - 15, TOTAL_SPELLS)
         else:
             number_of_spells = random.randint(int(min_spells_per_player), int(max_spells_per_player))
         for spell in random.sample(spells, number_of_spells):
@@ -149,7 +154,11 @@ class PlayerVisitedPlace:
 def random_player_places_links(players: [Player], places: [Place]) -> [PlayerVisitedPlace]:
     result: [PlayerVisitedPlace] = []
     for player in players:
-        for place in random.sample(places, random.randint(1, 15)):
+        if player.specie == "french":
+            number_of_places = (TOTAL_PLACES - 10, TOTAL_PLACES)
+        else:
+            number_of_places = (1, 15)
+        for place in random.sample(places, random.randint(*number_of_places)):
             result.append(PlayerVisitedPlace(player.ID, place.ID, 1+random_distributed_int(50)))
     return result
 
@@ -185,6 +194,7 @@ class CompanionOf:
 
 def random_companions(players: [Player], companions_percentage: int = 20) -> [CompanionOf]:
     result: [CompanionOf] = []
+    players = [player for player in players if player.specie != 'anglo']
     for idx, player in enumerate(players):
         for companion in players[idx+1:]:
             if random.randint(1, 100) <= companions_percentage:
