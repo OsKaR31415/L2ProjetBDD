@@ -5,7 +5,7 @@ import argparse
 import os
 
 TOTAL_PLACES = 352
-TOTAL_SPELLS = 361
+TOTAL_SPELLS = 362
 
 AVAILABLE_SPECIES = ['human', 'human',
                      'elf', 'elf', 'elf', 'elf', 'elf',
