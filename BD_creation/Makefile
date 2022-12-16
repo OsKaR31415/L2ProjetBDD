@@ -12,7 +12,7 @@ all: data update
 
 # run first time to install required dependencies
 install:
-	pip3 install fantasynames
+	python3 -m pip install fantasynames
 	# if ! type "psql"; then sudo apt install postgresql; fi
 
 
