@@ -251,12 +251,13 @@ FROM (SELECT player.name, count(companion.id) AS comp_count
     GROUP BY player.name) AS X
 ;
 
- -- number of spells mastered by players born in each place
+ -- number of spells that require a ritual mastered by players born in each place
 SELECT place.name, count(spell.id) FROM spell
 INNER JOIN playerknowsspell ON spell.id = spell_id
 INNER JOIN player ON player.id = playerknowsspell.player_id
 INNER JOIN playercomesfrom ON playercomesfrom.player_id = player.id
 INNER JOIN place ON place.id = place_id
+WHERE spell.ritual
 GROUP BY place.name;
 
 -----------------------------------------------------------------------------
@@ -345,7 +346,7 @@ GROUP BY player.name
 ;
 
 
- -- number of spells mastered by each players not born in a lowland, that have magic > 42 or master at least a spell of level 42
+ -- number of spells mastered by each players not born in a lowland, that have magic > 42 or master at least a spell of level >= 4
 SELECT player.name, count(spell.id) FROM (
     SELECT player.id AS id FROM player
     INNER JOIN playerknowsspell ON player.ID = player_id
@@ -362,23 +363,6 @@ INNER JOIN player ON pl.id = player.id
 GROUP BY player.name
 ;
 
-
-
- -- number of players whose companions do not come from seaside or mountains, for each place they come from
-SELECT player.name, place.biome
-FROM player
-INNER JOIN playercomesfrom ON player.ID = player_id
-INNER JOIN place ON place_id = place.id
-WHERE player.id NOT IN (
-    SELECT DISTINCT player.id
-    FROM player, (
-        SELECT player.id FROM player
-        INNER JOIN PlayerComesFrom ON player.id = player_id
-        INNER JOIN place ON place_id = place.id
-        WHERE place.biome = 'seaside' OR place.biome = 'mountains'
-    ) AS companion
-)
-;
 
 
  -- number of players that don't master 49-3 nor Amis, by the place they were born in
