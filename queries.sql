@@ -75,7 +75,7 @@ ORDER BY spell.name;
 -- 3) sélection, projection, jointure, différence --
 ----------------------------------------------------
 
- -- players that are not bord in a forest
+ -- players that are not born in a forest
 SELECT player.name FROM player
 INNER JOIN playercomesfrom ON player.ID = player_id
 WHERE place_id NOT IN (
@@ -160,7 +160,7 @@ WHERE player.specie = 'hobbit' and player.magic > 42
 -----------------
 
  -- players that have all the spells
-SELECT player.name FROM player
+SELECT player.name, player.specie FROM player
 WHERE player.ID NOT IN (
     SELECT DISTINCT notknowsspell.player_id FROM (
         SELECT player.ID AS player_id, spell.ID FROM player, spell
@@ -184,7 +184,7 @@ WHERE player.ID NOT IN (
 
 
  -- players that know all the players with a magic >= 48
- -- you may need to increas this number if ther are no results (or decrease of there are too much) depending on the data you are using
+ -- you may need to increase this number if ther are no results (or decrease of there are too much) depending on the data you are using
 SELECT player.name FROM player
 WHERE player.id NOT IN (
     SELECT DISTINCT player_id FROM (
@@ -264,7 +264,7 @@ GROUP BY place.name;
 -- 7) sélection, projection, jointure, groupement, aggrégation, différence --
 -----------------------------------------------------------------------------
 
- -- number of player that are not born in each non-forest place
+ -- number of player that are born in each non-forest place
 SELECT place.name, count(player.name) FROM player
 INNER JOIN playercomesfrom ON player.ID = player_id
 INNER JOIN place ON place_id = place.id
@@ -315,17 +315,7 @@ GROUP BY spell.name
 -- 8) sélection, projection, jointure, groupement, aggrégation, différence, union --
 ------------------------------------------------------------------------------------
 
- -- number of players born in each places that not a forests nor mountains
-SELECT place.name, count(player.name) FROM player
-INNER JOIN playercomesfrom ON player.ID = player_id
-INNER JOIN place ON place_id = place.id
-WHERE place_id NOT IN (
-    SELECT ID FROM place WHERE biome = 'forest' OR biome = 'mountain')
-GROUP BY place.name;
-
-
- -- spells owned by people that don't have friends or are hobbits whose magic is > 42
- -- number of spells owned by each people that don't have friends or are hobbits whose magic is > 42
+ -- number of spells owned by each player that don't have friends or are hobbits whose magic is > 42
 SELECT player.name, count(spell.id)
 FROM (SELECT spell.name AS spell_name FROM player
     INNER JOIN playerknowsspell ON player.ID = player_id
@@ -344,6 +334,16 @@ INNER JOIN PlayerKnowsSpell ON spell.id = spell_id
 INNER JOIN player ON player_id = player.id
 GROUP BY player.name
 ;
+
+
+ -- number of players born in each places that not a forests nor mountains
+SELECT place.name, count(player.name) FROM player
+INNER JOIN playercomesfrom ON player.ID = player_id
+INNER JOIN place ON place_id = place.id
+WHERE place_id NOT IN (
+    SELECT ID FROM place WHERE biome = 'forest' OR biome = 'mountain')
+GROUP BY place.name;
+
 
 
  -- number of spells mastered by each players not born in a lowland, that have magic > 42 or master at least a spell of level >= 4
